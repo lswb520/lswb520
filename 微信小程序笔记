@@ -1,0 +1,51 @@
+微信小程序列表加载
+wxml页面
+
+  <view class="box_one" wx:for="{{StroLsit}}">
+  <image src="../../images/icon7.png" class="box_img"></image>
+  <text class="text">{{item.PickLocation}}</text>
+  <text class="text_1"></text>
+  </view>
+  
+  使用wx:for可循环展示列表信息
+  
+  数据交互逻辑代码页面 js
+  var StroLsit=[];//声明一个数组变量
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+   
+  },
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+  var self=this;//这个必须声明，并且传入方法，否者加载失败
+  get_StroeList(self);//初始化加载列表
+  },
+  });
+  //请求数据加载方法
+  function get_StroeList(self){
+wx.request({//微信小程序请求API
+  url: '',//请求的路径，发布时数据交互的服务器需要有安全连接（https）,以及域名备案
+  method:'Post',//请求的方式（get/post）
+  success(res){//请求成功后的回调函数
+  
+    StroLsit=res.data;//将请求成功后返回数据赋值到storlist 声明的数组中
+    //注意  res 返回数据格式是 
+    {
+    "data":[{}],//data部分是获取到的数据
+    "xx":"",//其余有请求的状态以及其他返回值
+    }
+    
+    //console.log(res.data);
+    self.setData({
+      StroLsit:StroLsit
+    })
+  }
+})
+
+}
